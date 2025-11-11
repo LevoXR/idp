@@ -1,0 +1,37 @@
+| State/UT                               | Total Confirmed Cases (Cumulative) |
+| -------------------------------------- | ---------------------------------- |
+| Andhra Pradesh                         | 2,321,379                          |
+| Arunachal Pradesh                      | 64,518                             |
+| Assam                                  | 724,788                            |
+| Bihar                                  | 832,581                            |
+| Chandigarh                             | 93,785                             |
+| Chhattisgarh                           | 1,154,179                          |
+| Dadra and Nagar Haveli & Daman and Diu | 11,474                             |
+| Delhi (NCT)                            | 1,934,009                          |
+| Goa                                    | 248,540                            |
+| Gujarat                                | 1,231,483                          |
+| Haryana                                | 1,015,501                          |
+| Himachal Pradesh                       | 286,061                            |
+| Jammu and Kashmir                      | 455,006                            |
+| Jharkhand                              | 435,858                            |
+| Karnataka                              | 3,968,365                          |
+| Kerala                                 | 6,634,722                          |
+| Ladakh                                 | 28,411                             |
+| Lakshadweep                            | 11,408                             |
+| Madhya Pradesh                         | 1,044,243                          |
+| Maharashtra                            | 7,972,474                          |
+| Manipur                                | 137,266                            |
+| Meghalaya                              | 93,947                             |
+| Mizoram                                | 229,048                            |
+| Nagaland                               | 35,507                             |
+| Odisha                                 | 1,289,602                          |
+| Puducherry                             | 166,438                            |
+| Punjab                                 | 762,755                            |
+| Rajasthan                              | 1,288,328                          |
+| Sikkim                                 | 39,224                             |
+| Tamil Nadu                             | 3,473,116                          |
+| Telangana                              | 800,476                            |
+| Tripura                                | 100,901                            |
+| Uttar Pradesh                          | 2,090,050                          |
+| Uttarakhand                            | 438,663                            |
+| West Bengal                            | 2,027,901                          |
