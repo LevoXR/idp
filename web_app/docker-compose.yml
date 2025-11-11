@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=change-this-in-production-use-random-key
+      - DATABASE_URL=sqlite:///data/aditya_setu.db
+      - ADMIN_EMAIL=admin@adityasetu.com
+      - ADMIN_PASSWORD=admin123
+      - PORT=8000
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+

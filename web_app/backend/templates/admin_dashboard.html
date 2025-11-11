@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Aditya Setu{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="bi bi-speedometer2"></i> Admin Dashboard</h2>
+        <hr>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5>Total Assessments</h5>
+                <h2>{{ analytics.total }}</h2>
+                <small>Last {{ analytics.days }} days</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5>Low Risk</h5>
+                <h2>{{ analytics.low }}</h2>
+                <small>{{ (analytics.low / analytics.total * 100) | round(1) if analytics.total > 0 else 0 }}%</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5>Moderate Risk</h5>
+                <h2>{{ analytics.moderate }}</h2>
+                <small>{{ (analytics.moderate / analytics.total * 100) | round(1) if analytics.total > 0 else 0 }}%</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5>High Risk</h5>
+                <h2>{{ analytics.high }}</h2>
+                <small>{{ (analytics.high / analytics.total * 100) | round(1) if analytics.total > 0 else 0 }}%</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Filters</h5>
+                <div>
+                    <a href="{{ url_for('admin.manage_alerts') }}" class="btn btn-sm btn-warning">
+                        <i class="bi bi-bell"></i> Manage Alerts
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Risk Level</label>
+                        <select name="risk_level" class="form-select">
+                            <option value="all" {% if risk_filter == 'all' %}selected{% endif %}>All</option>
+                            <option value="Low" {% if risk_filter == 'Low' %}selected{% endif %}>Low</option>
+                            <option value="Moderate" {% if risk_filter == 'Moderate' %}selected{% endif %}>Moderate</option>
+                            <option value="High" {% if risk_filter == 'High' %}selected{% endif %}>High</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Days</label>
+                        <select name="days" class="form-select">
+                            <option value="7" {% if analytics.days == 7 %}selected{% endif %}>Last 7 days</option>
+                            <option value="14" {% if analytics.days == 14 %}selected{% endif %}>Last 14 days</option>
+                            <option value="30" {% if analytics.days == 30 %}selected{% endif %}>Last 30 days</option>
+                            <option value="90" {% if analytics.days == 90 %}selected{% endif %}>Last 90 days</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Recent Assessments</h5>
+            </div>
+            <div class="card-body">
+                {% if assessments %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Risk Level</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assessment in assessments %}
+                            <tr>
+                                <td>{{ assessment.created_at.strftime('%b %d, %Y %I:%M %p') }}</td>
+                                <td>{{ assessment.user.name }}</td>
+                                <td>{{ assessment.user.email }}</td>
+                                <td>
+                                    <span class="badge risk-badge risk-{{ assessment.risk_level.lower() }}">
+                                        {{ assessment.risk_level }}
+                                    </span>
+                                </td>
+                                <td>{{ assessment.risk_score }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    No assessments found for the selected filters.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-warning">
+                <h5 class="mb-0">Active Alerts</h5>
+            </div>
+            <div class="card-body">
+                {% if alerts %}
+                    {% for alert in alerts[:5] %}
+                    <div class="alert alert-warning mb-2">
+                        <h6>{{ alert.title }}</h6>
+                        <p class="mb-1 small">{{ alert.message[:80] }}...</p>
+                        <small class="text-muted">{{ alert.created_at.strftime('%b %d') }}</small>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No active alerts.</p>
+                {% endif %}
+                <a href="{{ url_for('admin.manage_alerts') }}" class="btn btn-sm btn-warning">
+                    Manage All Alerts
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

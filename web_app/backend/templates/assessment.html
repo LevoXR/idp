@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Health Assessment - Aditya Setu{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-clipboard-check"></i> Health Self-Assessment</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> Please answer all questions honestly to get an accurate risk assessment.
+                    This assessment is for informational purposes only and does not replace professional medical advice.
+                </div>
+
+                <form method="POST" action="{{ url_for('assessment.submit_assessment') }}" id="assessmentForm">
+                    {% for question in questions %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">Question {{ loop.index }} of {{ questions|length }}</h6>
+                            <p class="card-text"><strong>{{ question.question }}</strong></p>
+                            
+                            {% if question.type == 'yes_no' %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="{{ question.id }}" id="{{ question.id }}_yes" value="yes" required>
+                                <label class="form-check-label" for="{{ question.id }}_yes">Yes</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="{{ question.id }}" id="{{ question.id }}_no" value="no" required>
+                                <label class="form-check-label" for="{{ question.id }}_no">No</label>
+                            </div>
+                            {% elif question.type == 'numeric' %}
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" name="{{ question.id }}" id="{{ question.id }}" min="0" value="0" required>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Submit Assessment
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Progress indicator
+    let answered = 0;
+    const total = {{ questions|length }};
+    
+    document.querySelectorAll('input[type="radio"], input[type="number"]').forEach(input => {
+        input.addEventListener('change', function() {
+            answered = document.querySelectorAll('input[type="radio"]:checked, input[type="number"][value!="0"]').length;
+            // Could add progress bar here if needed
+        });
+    });
+</script>
+{% endblock %}
+
